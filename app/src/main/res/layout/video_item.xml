@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/video_thumbnail"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/video_thumbnail_content_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_play" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:text="@string/video_title"
+        app:layout_constraintStart_toEndOf="@id/video_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/video_thumbnail" />
+
+    <TextView
+        android:id="@+id/video_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:layout_constraintStart_toEndOf="@id/video_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/video_thumbnail"
+        tools:text="Big Buck Bunny" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:text="@string/video_description"
+        app:layout_constraintStart_toEndOf="@id/video_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/video_name" />
+
+    <TextView
+        android:id="@+id/video_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:layout_constraintStart_toEndOf="@id/video_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/video_name"
+        tools:text="Description of the Big Buck bunny" />
+</androidx.constraintlayout.widget.ConstraintLayout>
