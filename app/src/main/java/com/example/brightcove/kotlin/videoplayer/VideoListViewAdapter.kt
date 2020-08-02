@@ -13,20 +13,13 @@ import com.bumptech.glide.Glide
 import com.example.brightcove.kotlin.videoplayer.viewmodels.PlayerListViewModel
 
 class VideoListViewAdapter(
-    playerListViewModel: PlayerListViewModel,
+    private val playerListViewModel: PlayerListViewModel,
     lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<VideoListViewAdapter.ViewHolder>() {
 
     init {
-        playerListViewModel.videoList.observe(lifecycleOwner, Observer { updateData(it)})
+        playerListViewModel.videoList.observe(lifecycleOwner, Observer { notifyDataSetChanged() })
         playerListViewModel.loadVideos(false)
-    }
-
-    private val videoList = ArrayList<Video>()
-    private fun updateData(videoList:List<Video>) {
-        this.videoList.clear()
-        this.videoList.addAll(videoList)
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +29,7 @@ class VideoListViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val video = videoList[position]
+        val video = playerListViewModel.videoList.value?.get(position) ?: Video(mapOf())
         holder.videoNameView.text = video.name
         holder.videoDescriptionView.text = video.longDescription ?: video.description
         val poster = video.posterImage
@@ -47,7 +40,7 @@ class VideoListViewAdapter(
             .into(holder.videoThumbnailImageView)
     }
 
-    override fun getItemCount(): Int = videoList.size
+    override fun getItemCount(): Int = playerListViewModel.videoList.value?.size ?: 0
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val videoNameView: TextView = view.findViewById(R.id.video_name)
