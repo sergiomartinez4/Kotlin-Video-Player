@@ -23,7 +23,7 @@ class VideoListViewAdapter(
     }
 
     private val _videoList = mutableListOf<Video>()
-    var videoList: List<Video>
+    private var videoList: List<Video>
         get() = _videoList
         private set(value) {
             _videoList.clear()
