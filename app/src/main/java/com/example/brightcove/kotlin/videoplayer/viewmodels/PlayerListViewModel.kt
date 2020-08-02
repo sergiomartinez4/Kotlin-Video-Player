@@ -13,9 +13,12 @@ class PlayerListViewModel(val videoRepository: VideoRepository) : ViewModel() {
     private val _videoList = MutableLiveData<List<Video>>()
     val videoList: LiveData<List<Video>> = _videoList
 
-    fun loadVideos() {
-        viewModelScope.launch {
-            _videoList.postValue(videoRepository.getAllVideos())
+    fun loadVideos(forceUpdate: Boolean) {
+        val mustUpdate = forceUpdate || _videoList.value?.isEmpty() ?: true
+        if (mustUpdate) {
+            viewModelScope.launch {
+                _videoList.postValue(videoRepository.getAllVideos())
+            }
         }
     }
 }

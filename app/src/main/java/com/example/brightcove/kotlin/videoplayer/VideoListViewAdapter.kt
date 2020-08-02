@@ -18,19 +18,16 @@ class VideoListViewAdapter(
 ) : RecyclerView.Adapter<VideoListViewAdapter.ViewHolder>() {
 
     init {
-        playerListViewModel.videoList.observe(lifecycleOwner, Observer { videoList = it })
-        playerListViewModel.loadVideos()
+        playerListViewModel.videoList.observe(lifecycleOwner, Observer { updateData(it)})
+        playerListViewModel.loadVideos(false)
     }
 
-    private val _videoList = mutableListOf<Video>()
-    private var videoList: List<Video>
-        get() = _videoList
-        private set(value) {
-            _videoList.clear()
-            _videoList.addAll(value)
-            notifyDataSetChanged()
-        }
-
+    private val videoList = ArrayList<Video>()
+    private fun updateData(videoList:List<Video>) {
+        this.videoList.clear()
+        this.videoList.addAll(videoList)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
