@@ -32,6 +32,7 @@ class VideoListViewAdapter(
         val video = playerListViewModel.videoList.value?.get(position) ?: Video(mapOf())
         holder.videoNameView.text = video.name
         holder.videoDescriptionView.text = video.longDescription ?: video.description
+        holder.videoThumbnailImageView.setOnClickListener { playerListViewModel.openVideo(video) }
         val poster = video.posterImage
         Glide.with(holder.videoThumbnailImageView)
             .load(poster.toString())

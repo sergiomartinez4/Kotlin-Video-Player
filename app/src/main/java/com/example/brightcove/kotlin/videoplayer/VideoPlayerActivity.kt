@@ -9,7 +9,11 @@ import com.brightcove.player.view.BrightcoveExoPlayerVideoView
 import com.brightcove.player.view.BrightcovePlayer
 
 
-class MainActivity : BrightcovePlayer() {
+class VideoPlayerActivity : BrightcovePlayer() {
+
+    companion object {
+        const val VIDEO_INTENT_DATA = "video_intent_data"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // When extending the BrightcovePlayer, we must assign the brightcoveVideoView before
@@ -22,22 +26,33 @@ class MainActivity : BrightcovePlayer() {
 
         super.onCreate(savedInstanceState)
 
+        val video: Video? = intent?.getParcelableExtra(VIDEO_INTENT_DATA)
+        video?.let { addAndStart(it) } ?: loadDefaultVideo()
+
+    }
+
+    private fun loadDefaultVideo() {
         // Get the event emitter from the SDK and create a catalog request to fetch a video from the
         // Brightcove Edge service, given a video id, an account id and a policy key.
         // Get the event emitter from the SDK and create a catalog request to fetch a video from the
         // Brightcove Edge service, given a video id, an account id and a policy key.
         val eventEmitter = brightcoveVideoView.eventEmitter
-        val catalog =
-            Catalog(eventEmitter, getString(R.string.account), getString(R.string.policy))
+        val catalog = Catalog.Builder(eventEmitter, getString(R.string.account))
+            .setPolicy(getString(R.string.policy))
+            .build()
 
         catalog.findVideoByID(getString(R.string.videoId), object : VideoListener() {
             // Add the video found to the queue with add().
             // Start playback of the video with start().
             override fun onVideo(video: Video) {
                 Log.v(TAG, "onVideo: video = $video")
-                brightcoveVideoView.add(video)
-                brightcoveVideoView.start()
+                addAndStart(video)
             }
         })
+    }
+
+    private fun addAndStart(video: Video) {
+        brightcoveVideoView.add(video)
+        brightcoveVideoView.start()
     }
 }
