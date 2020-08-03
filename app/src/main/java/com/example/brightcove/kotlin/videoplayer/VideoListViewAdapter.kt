@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.brightcove.player.model.Video
 import com.brightcove.player.util.StringUtil
 import com.bumptech.glide.Glide
+import com.example.brightcove.kotlin.videoplayer.utils.title
 import com.example.brightcove.kotlin.videoplayer.viewmodels.PlayerListViewModel
 
 class VideoListViewAdapter(
@@ -31,7 +32,7 @@ class VideoListViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val video = playerListViewModel.videoList.value?.get(position) ?: Video(mapOf())
-        holder.videoNameView.text = video.name
+        holder.videoNameView.text = video.title
         holder.videoDurationView.text = StringUtil.stringForTime(video.duration.toLong())
         holder.videoThumbnailImageView.setOnClickListener { playerListViewModel.openVideo(video) }
         val poster = video.posterImage

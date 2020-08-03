@@ -5,36 +5,36 @@
     {
       "type":"VIDEO",
       "id":"6031901107001",
-      "description":"The Big Buck Bunny Video"
+      "title":"The Big Buck Bunny Video"
     },
     {
       "type":"VIDEO",
-      "id":"5420910949001",
-      "description":""
+      "id":"5420910950001",
+      "title":"Red bird"
     },{
       "type":"VIDEO",
-      "id":"5420910950001",
-      "description":""
+      "id":"5420910949001",
+      "title":"Green bird"
     },
     {
       "type":"VIDEO",
       "id":"5421546903001",
-      "description":""
+      "title":"Creating the Video View"
     },
     {
       "type":"VIDEO",
       "id":"5421543459001",
-      "description":""
+      "title":"Reviewing Tools and Resources"
     },
     {
       "type":"VIDEO",
       "id":"5421531913001",
-      "description":""
+      "title":"Getting a Video from a Remote Server"
     },
     {
       "type":"VIDEO",
       "id":"5441624003001",
-      "description":""
+      "title":"Lake Massapoag - 360"
     }
   ]
 }
