@@ -14,4 +14,5 @@
     <string name="video_thumbnail_content_description">The Thumbnail image of the Video</string>
     <string name="video_title">Title:</string>
     <string name="video_description">Description:</string>
+    <string name="default_duration">0:00</string>
 </resources>
