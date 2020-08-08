@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brightcove.player.model.Video
+import com.example.brightcove.kotlin.videoplayer.Event
 import com.example.brightcove.kotlin.videoplayer.data.source.VideoRepository
 import kotlinx.coroutines.launch
 
@@ -15,8 +16,8 @@ class PlayerListViewModel @ViewModelInject constructor(val videoRepository: Vide
     private val _videoList = MutableLiveData<List<Video>>()
     val videoList: LiveData<List<Video>> = _videoList
 
-    private val _videoToLoad = MutableLiveData<Video>()
-    val videoToLoad: LiveData<Video> = _videoToLoad
+    private val _videoToLoad = MutableLiveData<Event<Video>>()
+    val videoToLoad: LiveData<Event<Video>> = _videoToLoad
 
     fun loadVideos(forceUpdate: Boolean) {
         val mustUpdate = forceUpdate || _videoList.value?.isEmpty() ?: true
@@ -30,7 +31,7 @@ class PlayerListViewModel @ViewModelInject constructor(val videoRepository: Vide
     fun openVideo(video: Video) {
         // There's a problem with some properties that are not Parcelable/Serializable, so we'll remove them
         removeNonSerializableVideoProperties(video)
-        _videoToLoad.value = video
+        _videoToLoad.value = Event(video)
     }
 
     private fun removeNonSerializableVideoProperties(video: Video) {

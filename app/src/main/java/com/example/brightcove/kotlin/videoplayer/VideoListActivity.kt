@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.brightcove.player.model.Video
 import com.example.brightcove.kotlin.videoplayer.viewmodels.PlayerListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +18,7 @@ class VideoListActivity : AppCompatActivity(), VideoListActions {
         setContentView(R.layout.activity_player_list)
         setupFragment()
 
-        viewModel.videoToLoad.observe(this, Observer { openVideoPlayer(it) })
+        viewModel.videoToLoad.observe(this, EventObserver { openVideoPlayer(it) })
     }
 
     private fun setupFragment() {
