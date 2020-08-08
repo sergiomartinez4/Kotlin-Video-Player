@@ -8,7 +8,6 @@ import com.brightcove.player.model.Video
 import com.brightcove.player.view.BrightcoveExoPlayerVideoView
 import com.brightcove.player.view.BrightcovePlayer
 
-
 class VideoPlayerActivity : BrightcovePlayer() {
 
     companion object {

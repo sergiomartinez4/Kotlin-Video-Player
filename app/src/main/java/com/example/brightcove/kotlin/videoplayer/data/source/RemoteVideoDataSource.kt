@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class RemoteVideoRepository(val playlist: PlayerPlaylist, val catalog: Catalog) : VideoDataSource {
+class RemoteVideoDataSource(val playlist: PlayerPlaylist, val catalog: Catalog) : VideoDataSource {
     override suspend fun getAllVideos(): List<Video> {
         val videoPlaylist = mutableListOf<Video>()
         withContext(Dispatchers.IO) {

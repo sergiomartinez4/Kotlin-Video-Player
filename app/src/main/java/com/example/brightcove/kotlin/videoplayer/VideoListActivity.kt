@@ -3,21 +3,22 @@ package com.example.brightcove.kotlin.videoplayer
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.brightcove.player.model.Video
 import com.example.brightcove.kotlin.videoplayer.viewmodels.PlayerListViewModel
-import com.example.brightcove.kotlin.videoplayer.viewmodels.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class VideoListActivity : AppCompatActivity(), VideoListActions {
+    private val viewModel by viewModels<PlayerListViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player_list)
         setupFragment()
 
-        val viewModel = obtainViewModel(this)
         viewModel.videoToLoad.observe(this, Observer { openVideoPlayer(it) })
     }
 
@@ -25,16 +26,6 @@ class VideoListActivity : AppCompatActivity(), VideoListActions {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, VideoListFragment())
             .commitNow()
-    }
-
-    companion object {
-        fun obtainViewModel(fragmentActivity: FragmentActivity): PlayerListViewModel {
-            val viewModelFactory = ViewModelFactory.getInstance(fragmentActivity)
-            return ViewModelProvider(
-                fragmentActivity,
-                viewModelFactory
-            ).get(PlayerListViewModel::class.java)
-        }
     }
 
     override fun openVideoPlayer(video: Video) {

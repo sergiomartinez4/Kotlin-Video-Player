@@ -1,5 +1,6 @@
 package com.example.brightcove.kotlin.videoplayer.viewmodels
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,8 @@ import com.brightcove.player.model.Video
 import com.example.brightcove.kotlin.videoplayer.data.source.VideoRepository
 import kotlinx.coroutines.launch
 
-class PlayerListViewModel(val videoRepository: VideoRepository) : ViewModel() {
+class PlayerListViewModel @ViewModelInject constructor(val videoRepository: VideoRepository) :
+    ViewModel() {
 
     private val _videoList = MutableLiveData<List<Video>>()
     val videoList: LiveData<List<Video>> = _videoList
@@ -36,6 +38,6 @@ class PlayerListViewModel(val videoRepository: VideoRepository) : ViewModel() {
         video.properties.remove(Video.Fields.CAPTION_SOURCES)
 
         //PreviewThumbnail sources have a class that is not yet serializable as of Brightcove SDK version 6.14.0
-        video.properties.remove(Video.Fields.PREVIEW_THUMBNAIL_SOURCES);
+        video.properties.remove(Video.Fields.PREVIEW_THUMBNAIL_SOURCES)
     }
 }
