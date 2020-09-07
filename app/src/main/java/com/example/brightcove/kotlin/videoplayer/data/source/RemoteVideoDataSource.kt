@@ -6,30 +6,27 @@ import com.brightcove.player.model.Video
 import com.example.brightcove.kotlin.videoplayer.data.model.CatalogAsset
 import com.example.brightcove.kotlin.videoplayer.data.model.PlayerPlaylist
 import com.example.brightcove.kotlin.videoplayer.utils.title
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class RemoteVideoDataSource(val playlist: PlayerPlaylist, val catalog: Catalog) : VideoDataSource {
+class RemoteVideoDataSource(private val playlist: PlayerPlaylist, private val catalog: Catalog) :
+    VideoDataSource {
     override suspend fun getAllVideos(): List<Video> {
-        val videoPlaylist = mutableListOf<Video>()
-        withContext(Dispatchers.IO) {
-            val countDownLatch = CountDownLatch(playlist.catalogAssetList.size)
 
-            withContext(Dispatchers.Main) {
-                for (catalogAsset: CatalogAsset in playlist.catalogAssetList) {
-                    catalog.findVideoByID(catalogAsset.id, object : VideoListener() {
-                        override fun onVideo(video: Video) {
-                            video.title = catalogAsset.title
-                            videoPlaylist.add(video)
-                            countDownLatch.countDown();
-                        }
-                    })
-                }
-            }
-            countDownLatch.await(5, TimeUnit.SECONDS)
+        val videoPlaylist = mutableListOf<Video>()
+        for (catalogAsset: CatalogAsset in playlist.catalogAssetList) {
+            videoPlaylist.add(getCatalogVideo(catalogAsset))
         }
         return videoPlaylist
     }
+
+    private suspend fun getCatalogVideo(catalogAsset: CatalogAsset) =
+        suspendCoroutine<Video> { continuation ->
+            catalog.findVideoByID(catalogAsset.id, object : VideoListener() {
+                override fun onVideo(video: Video) {
+                    video.title = catalogAsset.title
+                    continuation.resume(video)
+                }
+            })
+        }
 }
