@@ -19,13 +19,19 @@ class PlayerListViewModel @ViewModelInject constructor(val videoRepository: Vide
     private val _videoToLoad = MutableLiveData<Event<Video>>()
     val videoToLoad: LiveData<Event<Video>> = _videoToLoad
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun loadVideos(forceUpdate: Boolean) {
+        _isLoading.value = true
         val mustUpdate = forceUpdate || _videoList.value?.isEmpty() ?: true
         if (mustUpdate) {
             viewModelScope.launch {
                 _videoList.postValue(videoRepository.getAllVideos())
+                _isLoading.value = false
             }
         }
+
     }
 
     fun openVideo(video: Video) {

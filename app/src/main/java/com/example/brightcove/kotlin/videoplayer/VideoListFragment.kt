@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.brightcove.kotlin.videoplayer.viewmodels.PlayerListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 
 @AndroidEntryPoint
 class VideoListFragment : Fragment() {
@@ -30,14 +31,19 @@ class VideoListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+
         context?.let {
             val videoListAdapter = VideoListViewAdapter(playerListViewModel, viewLifecycleOwner)
-            // Set the adapter
-            if (view is RecyclerView) {
-                with(view) {
-                    layoutManager = LinearLayoutManager(it)
-                    adapter = videoListAdapter
+            playerListViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+                view.spinner.visibility = when (it) {
+                    true -> View.VISIBLE
+                    else -> View.GONE
                 }
+            })
+
+            with(view.recyclerViewList) {
+                layoutManager = LinearLayoutManager(it)
+                adapter = videoListAdapter
             }
         }
 
