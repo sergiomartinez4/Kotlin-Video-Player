@@ -1,20 +1,22 @@
 package com.example.brightcove.kotlin.videoplayer.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.brightcove.player.model.Video
 import com.example.brightcove.kotlin.videoplayer.Event
 import com.example.brightcove.kotlin.videoplayer.data.source.VideoRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 class PlayerListViewModel @ViewModelInject constructor(val videoRepository: VideoRepository) :
     ViewModel() {
 
     private val _videoList = MutableLiveData<List<Video>>()
+    @Suppress("unused")
     val videoList: LiveData<List<Video>> = _videoList
+
+    @ExperimentalCoroutinesApi
+    val videoFlow:LiveData<Video> = videoRepository.getVideos().asLiveData()
 
     private val _videoToLoad = MutableLiveData<Event<Video>>()
     val videoToLoad: LiveData<Event<Video>> = _videoToLoad

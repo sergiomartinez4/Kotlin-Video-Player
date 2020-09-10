@@ -19,9 +19,16 @@ class VideoListViewAdapter(
     lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<VideoListViewAdapter.ViewHolder>() {
 
+    private val videoList = mutableListOf<Video>()
+
     init {
-        playerListViewModel.videoList.observe(lifecycleOwner, Observer { notifyDataSetChanged() })
-        playerListViewModel.loadVideos(false)
+        @Suppress("EXPERIMENTAL_API_USAGE")
+        playerListViewModel.videoFlow.observe(lifecycleOwner, Observer { addVideo(it) })
+    }
+
+    private fun addVideo(video: Video) {
+        videoList.add(video)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +38,7 @@ class VideoListViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val video = playerListViewModel.videoList.value?.get(position) ?: Video(mapOf())
+        val video = videoList[position]
         holder.videoNameView.text = video.title
         holder.videoDurationView.text = StringUtil.stringForTime(video.duration.toLong())
         holder.videoThumbnailImageView.setOnClickListener { playerListViewModel.openVideo(video) }
@@ -43,7 +50,7 @@ class VideoListViewAdapter(
             .into(holder.videoThumbnailImageView)
     }
 
-    override fun getItemCount(): Int = playerListViewModel.videoList.value?.size ?: 0
+    override fun getItemCount(): Int = videoList.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val videoNameView: TextView = view.findViewById(R.id.video_name)
